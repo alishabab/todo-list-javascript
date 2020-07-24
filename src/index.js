@@ -31,8 +31,9 @@ const renderTodo = (todo, project) => {
   const delBtn = document.createElement('button');
   delBtn.textContent = 'Remove Todo';
   modalContent.appendChild(delBtn);
-  delBtn.addEventListener('click', () => project.removeTodo(todo));
+  delBtn.addEventListener('click', () => deleteTodo(project, todo));
 };
+
 const getTodoList = (project) => {
   const ul = document.createElement('ul');
   project.todoList.forEach(todo => {
@@ -49,10 +50,11 @@ const getTodoList = (project) => {
 const renderProjects = () => {
   cleanPage(projectDiv);
   projectList.forEach(project => {
-    const p = document.createElement('p');
-    p.textContent = project.title;
-    projectDiv.appendChild(p);
-    projectDiv.appendChild(getTodoList(project));
+    const h2 = document.createElement('h2');
+    h2.textContent = project.title;
+    projectDiv.appendChild(h2);
+    const ul = getTodoList(project)
+    projectDiv.appendChild(ul);
     MicroModal.init();
   });
 };
@@ -81,19 +83,33 @@ const createTodo = (event) => {
   closeModal();
 };
 
+const deleteTodo = (project, todo) => {
+  project.removeTodo(todo)
+  renderProjects()
+  closeModal();
+}
+
 const createTodoForm = () => {
   cleanPage(modalContent);
   modalTitle.textContent = 'Add Todo';
   const form = document.createElement('form');
-  const inputs = ['title', 'description', 'dueDate', 'priority', 'project'];
+  const inputs = ['title', 'description', 'dueDate', 'priority'];
+  const select = document.createElement('select')
+  select.classList.add('todo-project')
   inputs.forEach(input => {
     const element = document.createElement('input');
     element.textContent = input;
     element.classList.add(`todo-${input}`);
     form.appendChild(element);
   });
+  projectList.forEach(project => {
+    const option = document.createElement('option')
+    option.textContent = project.title
+    select.appendChild(option)
+  })
   const button = document.createElement('button');
   button.textContent = 'Create Todo';
+  form.appendChild(select)
   form.appendChild(button);
   button.addEventListener('click', createTodo);
   modalContent.appendChild(form);
