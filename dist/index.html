@@ -4,11 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src="./bundle.js"></script>
 </head>
 <body>
-  
-  <p>Hello world</p>
-  
+  <form>
+    <h2>Add new Project</h2>
+    <label for="title">Project Title</label>
+    <input type="text" class="project-title"> <br>
+    <label for="description">Project Description</label> <br>
+    <textarea name="project-decription"cols="30" rows="10" class="project-decription"></textarea> <br>
+    <input type="button" value="Create" id="create-project">
+  </form>
+  <h2>Projects</h2>
+  <div id="projects"></div>
+
+  <script src="./bundle.js"></script>
 </body>
 </html>
