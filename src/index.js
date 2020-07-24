@@ -1,7 +1,9 @@
+import MicroModal from 'micromodal';
 import './style.scss';
 import Project from './projects';
 import Todo from './todos';
 
+MicroModal.init();
 const projectDiv = document.querySelector('#projects');
 const createProjectBtn = document.querySelector('#create-project');
 console.log(createProjectBtn);
@@ -32,7 +34,7 @@ const createTodoForm = () => {
   button.textContent = 'Create Todo';
   form.appendChild(button);
   button.addEventListener('click', createTodo);
-  document.body.appendChild(form);
+  document.querySelector('#todo-form').appendChild(form);
 };
 const createTodo = () => {
   const project = defaultProject;
@@ -56,11 +58,14 @@ const getTodoList = (project) => {
 const renderProjects = () => {
   projectList.forEach(project => {
     const p = document.createElement('p');
-    const newTodoBtn = document.createElement('button');
-    newTodoBtn.textContent = '+-';
-    p.textContent = project.title;
-    p.appendChild(newTodoBtn);
-    newTodoBtn.addEventListener('click', createTodoForm);
+    p.innerHTML = `<button data-micromodal-trigger="modal-1">Click here to open the modal!</button>`
+    // const newTodoBtn = document.createElement('button');
+    // newTodoBtn.setAttribute("data-micromodal-trigger", "modal-1");
+    // newTodoBtn.textContent = '+-';
+    // p.textContent = project.title;
+    // p.appendChild(newTodoBtn);
+    // projectDiv.appendChild(newTodoBtn);
+    // newTodoBtn.addEventListener('click', createTodoForm);
     projectDiv.appendChild(p);
     projectDiv.appendChild(getTodoList(project));
   });

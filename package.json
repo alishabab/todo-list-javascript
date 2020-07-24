@@ -36,6 +36,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "core-util-is": "^1.0.2"
+    "core-util-is": "^1.0.2",
+    "micromodal": "^0.4.6"
   }
 }
