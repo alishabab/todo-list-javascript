@@ -4,7 +4,6 @@ import Project from './projects';
 import Todo from './todos';
 
 const projectDiv = document.querySelector('#projects');
-const createProjectBtn = document.querySelector('#create-project');
 const modalContent = document.querySelector('.modal__content');
 const modalTitle = document.querySelector('.modal__title');
 
@@ -18,6 +17,8 @@ const cleanPage = (element) => {
     element.removeChild(element.lastChild);
   }
 };
+
+const closeModal = () => document.querySelector('.modal__btn').click();
 
 const renderTodo = (todo) => {
   cleanPage(modalContent);
@@ -34,6 +35,7 @@ const getTodoList = (project) => {
   project.todoList.forEach(todo => {
     const li = document.createElement('li');
     li.textContent = todo.title;
+    li.classList.add('todo-list-items');
     li.addEventListener('click', () => renderTodo(todo));
     li.setAttribute('data-micromodal-trigger', 'modal-1');
     ul.appendChild(li);
@@ -52,12 +54,14 @@ const renderProjects = () => {
   });
 };
 
-const createProject = () => {
+const createProject = (event) => {
+  event.preventDefault();
   const title = document.querySelector('.project-title').value;
-  const description = document.querySelector('.project-decription').value;
+  const description = document.querySelector('.project-description').value;
   const newProject = new Project(title, description);
   projectList.push(newProject);
   renderProjects();
+  closeModal();
 };
 
 const createTodo = (event) => {
@@ -71,6 +75,7 @@ const createTodo = (event) => {
   const newTodo = new Todo(title, description, dueDate, priority);
   project[0].todoList.push(newTodo);
   renderProjects();
+  closeModal();
 };
 
 const createTodoForm = () => {
@@ -91,7 +96,26 @@ const createTodoForm = () => {
   modalContent.appendChild(form);
 };
 
+const createProjectForm = () => {
+  cleanPage(modalContent);
+  modalTitle.textContent = 'Add Project';
+  const form = document.createElement('form');
+  const inputs = ['title', 'description'];
+  inputs.forEach(input => {
+    const element = document.createElement('input');
+    element.textContent = input;
+    element.classList.add(`project-${input}`);
+    form.appendChild(element);
+  });
+  const button = document.createElement('button');
+  button.textContent = 'Create Project';
+  form.appendChild(button);
+  button.addEventListener('click', createProject);
+  modalContent.appendChild(form);
+};
+
 document.querySelector('.create-todo-btn').addEventListener('click', createTodoForm);
 
-createProjectBtn.addEventListener('click', createProject);
+document.querySelector('.create-project-btn').addEventListener('click', createProjectForm);
+
 renderProjects();

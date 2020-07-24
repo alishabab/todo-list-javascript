@@ -6,21 +6,12 @@
     <title>Document</title>
   </head>
   <body>
-    <form>
-      <h2>Add new Project</h2>
-      <label for="title">Project Title</label>
-      <input type="text" class="project-title" /> <br />
-      <label for="description">Project Description</label> <br />
-      <textarea
-        name="project-decription"
-        cols="30"
-        rows="10"
-        class="project-decription"
-      ></textarea>
-      <br />
-      <input type="button" value="Create" id="create-project" />
-    </form>
-    <button data-micromodal-trigger="modal-1" class='create-todo-btn'>Create New Todo</button>
+    <button data-micromodal-trigger="modal-1" class="create-project-btn">
+      Create New Project
+    </button>
+    <button data-micromodal-trigger="modal-1" class="create-todo-btn">
+      Create New Todo
+    </button>
     <h2>Projects</h2>
     <div id="projects"></div>
 
@@ -34,18 +25,14 @@
           aria-labelledby="modal-1-title"
         >
           <header class="modal__header">
-            <h2 class="modal__title" id="modal-1-title">
-              
-            </h2>
+            <h2 class="modal__title" id="modal-1-title"></h2>
             <button
               class="modal__close"
               aria-label="Close modal"
               data-micromodal-close
             ></button>
           </header>
-          <main class="modal__content" id="modal-1-content">
-            
-          </main>
+          <main class="modal__content" id="modal-1-content"></main>
           <footer class="modal__footer">
             <button
               class="modal__btn"
