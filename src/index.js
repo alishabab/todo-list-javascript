@@ -20,7 +20,7 @@ const cleanPage = (element) => {
 
 const closeModal = () => document.querySelector('.modal__btn').click();
 
-const renderTodo = (todo) => {
+const renderTodo = (todo, project) => {
   cleanPage(modalContent);
   modalTitle.textContent = todo.title;
   Object.entries(todo).forEach(item => {
@@ -28,15 +28,18 @@ const renderTodo = (todo) => {
     element.textContent = `${item[0]}: ${item[1]}`;
     modalContent.appendChild(element);
   });
+  const delBtn = document.createElement('button');
+  delBtn.textContent = 'Remove Todo';
+  modalContent.appendChild(delBtn);
+  delBtn.addEventListener('click', () => project.removeTodo(todo));
 };
-
 const getTodoList = (project) => {
   const ul = document.createElement('ul');
   project.todoList.forEach(todo => {
     const li = document.createElement('li');
     li.textContent = todo.title;
     li.classList.add('todo-list-items');
-    li.addEventListener('click', () => renderTodo(todo));
+    li.addEventListener('click', () => renderTodo(todo, project));
     li.setAttribute('data-micromodal-trigger', 'modal-1');
     ul.appendChild(li);
   });

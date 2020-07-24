@@ -10,7 +10,9 @@ class Project {
   }
 
   removeTodo(todo) {
+    console.log(this.todoList);
     this.todoList = this.todoList.filter((value) => value !== todo);
+    console.log(this.todoList);
   }
 
   get countTodos() {
