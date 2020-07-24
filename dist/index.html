@@ -1,51 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <form>
-    <h2>Add new Project</h2>
-    <label for="title">Project Title</label>
-    <input type="text" class="project-title"> <br>
-    <label for="description">Project Description</label> <br>
-    <textarea name="project-decription"cols="30" rows="10" class="project-decription"></textarea> <br>
-    <input type="button" value="Create" id="create-project">
-  </form>
-  <h2>Projects</h2>
-  <button data-micromodal-trigger="modal-1">Click here to open the modal!</button>
-  <div id="projects"></div>
-<!-- Model -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form>
+      <h2>Add new Project</h2>
+      <label for="title">Project Title</label>
+      <input type="text" class="project-title" /> <br />
+      <label for="description">Project Description</label> <br />
+      <textarea
+        name="project-decription"
+        cols="30"
+        rows="10"
+        class="project-decription"
+      ></textarea>
+      <br />
+      <input type="button" value="Create" id="create-project" />
+    </form>
+    <button data-micromodal-trigger="modal-1" class='create-todo-btn'>Create New Todo</button>
+    <h2>Projects</h2>
+    <div id="projects"></div>
 
-<h1>Simple Modal App</h1>
-<!-- <p><button data-micromodal-trigger="modal-1">Click here to open the modal!</button></p> -->
-<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="modal-1-title">
-          Micromodal
-        </h2>
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-      </header>
-      <main class="modal__content" id="modal-1-content">
-        <p>
-        Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.
-        </p>
-      </main>
-      <footer class="modal__footer">
-        <button class="modal__btn modal__btn-primary">Continue</button>
-        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
-      </footer>
-      <div id="todo-form"></div>
+    <!-- Modal -->
+    <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+      <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <div
+          class="modal__container"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-1-title"
+        >
+          <header class="modal__header">
+            <h2 class="modal__title" id="modal-1-title">
+              Micromodal
+            </h2>
+            <button
+              class="modal__close"
+              aria-label="Close modal"
+              data-micromodal-close
+            ></button>
+          </header>
+          <main class="modal__content" id="modal-1-content">
+            <p>
+              Try hitting the <code>tab</code> key and notice how the focus
+              stays within the modal itself. Also, <code>esc</code> to close
+              modal.
+            </p>
+          </main>
+          <footer class="modal__footer">
+            <button class="modal__btn modal__btn-primary">Continue</button>
+            <button
+              class="modal__btn"
+              data-micromodal-close
+              aria-label="Close this dialog window"
+            >
+              Close
+            </button>
+          </footer>
+          <div id="todo-form"></div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- Model end -->
+    <!-- Model end -->
 
-  <script src="./bundle.js"></script>
-</body>
+    <script src="./bundle.js"></script>
+  </body>
 </html>
