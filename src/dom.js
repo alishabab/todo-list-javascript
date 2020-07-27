@@ -60,7 +60,10 @@ const Display = (() => {
     const ul = document.createElement('ul');
     project.todoList.forEach(todo => {
       const li = document.createElement('li');
+      const completeBtn = document.createElement('button')
+      completeBtn.textContent = `${todo.complete ? 'Mark as Uncomplete' : 'Mark as Complete'}`
       li.textContent = `${todo.title} - Due: ${todo.dueDate}`;
+      li.appendChild(completeBtn)
       li.classList.add('todo-list-items');
       li.addEventListener('click', () => renderTodo(todo, project));
       li.setAttribute('data-micromodal-trigger', 'modal-1');
