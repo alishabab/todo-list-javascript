@@ -10,7 +10,8 @@ const modalTitle = document.querySelector('.modal__title');
 const defaultProject = new Project('default', 'This is the default toDo list');
 const testTodo = new Todo('test', 'test', 'ddffdsd', 'dddddddd');
 defaultProject.addTodo(testTodo);
-const projectList = [defaultProject];
+let projectList = [defaultProject];
+let firstRender = false;
 
 const cleanPage = (element) => {
   while (element.firstChild) {
@@ -29,16 +30,20 @@ const renderTodo = (todo, project) => {
     modalContent.appendChild(element);
   });
   const delBtn = document.createElement('button');
+  const editBtn = document.createElement('button');
   delBtn.textContent = 'Remove Todo';
   modalContent.appendChild(delBtn);
   delBtn.addEventListener('click', () => deleteTodo(project, todo));
+  editBtn.textContent = 'Edit Todo';
+  modalContent.appendChild(editBtn);
+  editBtn.addEventListener('click', () => editTodo(project, todo));
 };
 
 const getTodoList = (project) => {
   const ul = document.createElement('ul');
   project.todoList.forEach(todo => {
     const li = document.createElement('li');
-    li.textContent = todo.title;
+    li.textContent = `${todo.title} - Due: ${todo.dueDate}`;
     li.classList.add('todo-list-items');
     li.addEventListener('click', () => renderTodo(todo, project));
     li.setAttribute('data-micromodal-trigger', 'modal-1');
@@ -49,11 +54,19 @@ const getTodoList = (project) => {
 
 const renderProjects = () => {
   cleanPage(projectDiv);
+
+  if (window.localStorage.getItem('projects') && firstRender === false) {
+    projectList = JSON.parse(window.localStorage.getItem('projects'));
+    firstRender = true;
+  } else {
+    window.localStorage.setItem('projects', JSON.stringify(projectList));
+  }
+
   projectList.forEach(project => {
     const h2 = document.createElement('h2');
     h2.textContent = project.title;
     projectDiv.appendChild(h2);
-    const ul = getTodoList(project)
+    const ul = getTodoList(project);
     projectDiv.appendChild(ul);
     MicroModal.init();
   });
@@ -84,34 +97,48 @@ const createTodo = (event) => {
 };
 
 const deleteTodo = (project, todo) => {
-  project.removeTodo(todo)
-  renderProjects()
+  console.log(project);
+  project.removeTodo(todo);
+  renderProjects();
   closeModal();
-}
+};
 
-const createTodoForm = () => {
+const editTodo = (project, todo) => {
+  createTodoForm(true, todo, project);
+};
+
+const createTodoForm = (edit = false, todo = {}, project = {}) => {
   cleanPage(modalContent);
-  modalTitle.textContent = 'Add Todo';
   const form = document.createElement('form');
   const inputs = ['title', 'description', 'dueDate', 'priority'];
-  const select = document.createElement('select')
-  select.classList.add('todo-project')
+  const select = document.createElement('select');
+  select.classList.add('todo-project');
   inputs.forEach(input => {
     const element = document.createElement('input');
     element.textContent = input;
+    if (edit === true) {
+      element.value = todo[input];
+    }
     element.classList.add(`todo-${input}`);
     form.appendChild(element);
   });
   projectList.forEach(project => {
-    const option = document.createElement('option')
-    option.textContent = project.title
-    select.appendChild(option)
-  })
+    const option = document.createElement('option');
+    option.textContent = project.title;
+    select.appendChild(option);
+  });
+  form.appendChild(select);
   const button = document.createElement('button');
-  button.textContent = 'Create Todo';
-  form.appendChild(select)
-  form.appendChild(button);
+  if (edit === false) {
+    modalTitle.textContent = 'Add Todo';
+    button.textContent = 'Create Todo';
+  } else {
+    modalTitle.textContent = 'Edit Todo';
+    button.textContent = 'Finished Edit';
+    button.addEventListener('click', () => deleteTodo(project, todo));
+  }
   button.addEventListener('click', createTodo);
+  form.appendChild(button);
   modalContent.appendChild(form);
 };
 
