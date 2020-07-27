@@ -2,12 +2,6 @@
   box-sizing: border-box;
 }
 
-// p {
-//   border-bottom: 2px solid black;
-//   color: red;
-//   font-size: 30px;
-// }
-
 .todo-list-items {
   list-style-type: none;
   text-decoration: underline;
@@ -24,8 +18,19 @@ button {
 \  **************************/
 
 .modal {
-  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
-    helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    avenir next,
+    avenir,
+    helvetica neue,
+    helvetica,
+    ubuntu,
+    roboto,
+    noto,
+    segoe ui,
+    arial,
+    sans-serif;
 }
 
 .modal__overlay {
@@ -172,6 +177,11 @@ button {
   display: block;
 }
 
+.micromodal-slide .modal__container,
+.micromodal-slide .modal__overlay {
+  will-change: transform;
+}
+
 .micromodal-slide[aria-hidden='false'] .modal__overlay {
   animation: mmfadeIn 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
@@ -186,9 +196,4 @@ button {
 
 .micromodal-slide[aria-hidden='true'] .modal__container {
   animation: mmslideOut 0.3s cubic-bezier(0, 0, 0.2, 1);
-}
-
-.micromodal-slide .modal__container,
-.micromodal-slide .modal__overlay {
-  will-change: transform;
 }
