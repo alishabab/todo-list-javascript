@@ -31,6 +31,13 @@ const Display = (() => {
     renderProjects();
     closeModal();
   };
+
+  // const removeProject = (project) => {
+  //   if (project === defaultProject) { return; }
+  //   projectList = projectList.filter((value) => value !== project);
+  //   // eslint-disable-next-line no-use-before-define
+  //   renderProjects();
+  // };
   const renderTodo = (todo, project) => {
     cleanPage(modalContent);
     modalTitle.textContent = todo.title;
@@ -77,6 +84,10 @@ const Display = (() => {
       projectDiv.appendChild(h2);
       const ul = getTodoList(project);
       projectDiv.appendChild(ul);
+      // const delBtn = document.createElement('button');
+      // delBtn.textContent = 'Remove Project';
+      // projectDiv.appendChild(delBtn);
+      // delBtn.addEventListener('click', () => removeProject(project));
       MicroModal.init();
     });
   };
@@ -157,9 +168,7 @@ const Display = (() => {
     modalContent.appendChild(form);
   };
 
-  return {
-    renderProjects, createProjectForm, createTodoForm, defaultProject,
-  };
+  return { renderProjects, createProjectForm, createTodoForm };
 })();
 
 export default Display;
