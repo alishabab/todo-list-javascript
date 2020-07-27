@@ -1,4 +1,6 @@
 import MicroModal from 'micromodal';
+import store from 'store2'
+
 import './style.scss';
 import Project from './projects';
 import Todo from './todos';
@@ -9,7 +11,7 @@ const modalTitle = document.querySelector('.modal__title');
 
 const defaultProject = new Project('default', 'This is the default toDo list');
 const testTodo = new Todo('test', 'test', 'ddffdsd', 'dddddddd');
-defaultProject.addTodo(testTodo);
+defaultProject.todoList.push(testTodo);
 let projectList = [defaultProject];
 let firstRender = false;
 
@@ -18,6 +20,11 @@ const cleanPage = (element) => {
     element.removeChild(element.lastChild);
   }
 };
+const removeTodo = (project, todo) => {
+  project.todoList = project.todoList.filter((value) => value !== todo);
+  renderProjects();
+  closeModal();
+}
 
 const closeModal = () => document.querySelector('.modal__btn').click();
 
@@ -33,7 +40,7 @@ const renderTodo = (todo, project) => {
   const editBtn = document.createElement('button');
   delBtn.textContent = 'Remove Todo';
   modalContent.appendChild(delBtn);
-  delBtn.addEventListener('click', () => deleteTodo(project, todo));
+  delBtn.addEventListener('click', () => removeTodo(project, todo));
   editBtn.textContent = 'Edit Todo';
   modalContent.appendChild(editBtn);
   editBtn.addEventListener('click', () => editTodo(project, todo));
@@ -56,10 +63,10 @@ const renderProjects = () => {
   cleanPage(projectDiv);
 
   if (window.localStorage.getItem('projects') && firstRender === false) {
-    projectList = JSON.parse(window.localStorage.getItem('projects'));
+    projectList = store('projects');
     firstRender = true;
   } else {
-    window.localStorage.setItem('projects', JSON.stringify(projectList));
+    store('projects', projectList);
   }
 
   projectList.forEach(project => {
@@ -77,6 +84,7 @@ const createProject = (event) => {
   const title = document.querySelector('.project-title').value;
   const description = document.querySelector('.project-description').value;
   const newProject = new Project(title, description);
+  // const newProject = Project(title, description);
   projectList.push(newProject);
   renderProjects();
   closeModal();
@@ -95,19 +103,11 @@ const createTodo = (event) => {
   renderProjects();
   closeModal();
 };
-
-const deleteTodo = (project, todo) => {
-  console.log(project);
-  project.removeTodo(todo);
-  renderProjects();
-  closeModal();
-};
-
 const editTodo = (project, todo) => {
   createTodoForm(true, todo, project);
 };
 
-const createTodoForm = (edit = false, todo = {}, project = {}) => {
+const createTodoForm = (edited, todo, project) => {
   cleanPage(modalContent);
   const form = document.createElement('form');
   const inputs = ['title', 'description', 'dueDate', 'priority'];
@@ -116,7 +116,7 @@ const createTodoForm = (edit = false, todo = {}, project = {}) => {
   inputs.forEach(input => {
     const element = document.createElement('input');
     element.textContent = input;
-    if (edit === true) {
+    if (edited) {
       element.value = todo[input];
     }
     element.classList.add(`todo-${input}`);
@@ -129,13 +129,13 @@ const createTodoForm = (edit = false, todo = {}, project = {}) => {
   });
   form.appendChild(select);
   const button = document.createElement('button');
-  if (edit === false) {
+  if (!edited) {
     modalTitle.textContent = 'Add Todo';
     button.textContent = 'Create Todo';
   } else {
     modalTitle.textContent = 'Edit Todo';
     button.textContent = 'Finished Edit';
-    button.addEventListener('click', () => deleteTodo(project, todo));
+    button.addEventListener('click', () => removeTodo(project, todo));
   }
   button.addEventListener('click', createTodo);
   form.appendChild(button);
@@ -160,7 +160,7 @@ const createProjectForm = () => {
   modalContent.appendChild(form);
 };
 
-document.querySelector('.create-todo-btn').addEventListener('click', createTodoForm);
+document.querySelector('.create-todo-btn').addEventListener('click', () => createTodoForm(false, {}, {}));
 
 document.querySelector('.create-project-btn').addEventListener('click', createProjectForm);
 
