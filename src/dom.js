@@ -20,6 +20,22 @@ const Display = (() => {
     }
   };
 
+  const setNotice = (text) => {
+    const p = document.querySelector('.modal__notice');
+    p.textContent = text;
+  };
+
+  const checkInputs = (arr) => {
+    let inputsPass = true;
+    arr.forEach(input => {
+      if (input.length < 1) { inputsPass = false; }
+    });
+    if (inputsPass === false) {
+      setNotice('All fields Required');
+    }
+    return inputsPass;
+  };
+
   const editTodo = (project, todo) => {
     // eslint-disable-next-line no-use-before-define
     createTodoForm(true, todo, project);
@@ -67,7 +83,7 @@ const Display = (() => {
       const li = document.createElement('li');
       const completeBtn = document.createElement('button');
       completeBtn.textContent = `${todo.complete ? 'Done' : 'Not Done'}`;
-      li.textContent = `${todo.title} - Due: ${todo.dueDate}`;
+      li.innerHTML = `<strong>${todo.title}</strong> - Due: ${todo.dueDate}`;
       ul.appendChild(completeBtn);
       completeBtn.addEventListener('click', () => toggleDone(todo));
       li.classList.add('todo-list-items');
@@ -89,14 +105,12 @@ const Display = (() => {
 
     projectList.forEach(project => {
       const h2 = document.createElement('h2');
+      const hr = document.createElement('hr');
       h2.textContent = project.title;
       projectDiv.appendChild(h2);
       const ul = getTodoList(project);
       projectDiv.appendChild(ul);
-      // const delBtn = document.createElement('button');
-      // delBtn.textContent = 'Remove Project';
-      // projectDiv.appendChild(delBtn);
-      // delBtn.addEventListener('click', () => removeProject(project));
+      projectDiv.appendChild(hr);
       MicroModal.init();
     });
   };
@@ -105,6 +119,7 @@ const Display = (() => {
     event.preventDefault();
     const title = document.querySelector('.project-title').value;
     const description = document.querySelector('.project-description').value;
+    if (!checkInputs([title, description])) { return; }
     const newProject = new Project(title, description);
     projectList.push(newProject);
     renderProjects();
@@ -112,6 +127,7 @@ const Display = (() => {
   };
 
   const createProjectForm = () => {
+    setNotice('');
     cleanPage(modalContent);
     modalTitle.textContent = 'Add Project';
     const form = document.createElement('form');
@@ -135,18 +151,6 @@ const Display = (() => {
     modalContent.appendChild(form);
   };
 
-  const checkInputs = (arr) => {
-    let inputsPass = true;
-    arr.forEach(input => {
-      if (input.length < 1) { inputsPass = false; }
-    });
-    if (inputsPass === false) {
-      const p = document.createElement('p');
-      p.textContent = 'Please input all data';
-      modalContent.appendChild(p);
-    }
-    return inputsPass;
-  };
   const createTodo = (event) => {
     event.preventDefault();
     const projectName = document.querySelector('.todo-project').value;
@@ -162,6 +166,7 @@ const Display = (() => {
     closeModal();
   };
   const createTodoForm = (edited, todo, project) => {
+    setNotice('');
     cleanPage(modalContent);
     const form = document.createElement('form');
     const inputs = [['title', 'text'], ['description', 'text'], ['dueDate', 'date'], ['priority', 'number']];

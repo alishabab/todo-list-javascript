@@ -2,11 +2,36 @@
   box-sizing: border-box;
 }
 
+main {
+  padding: 10px;
+}
+
+h1 {
+  text-align: center;
+  width: 10%;
+  box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.75);
+}
+
+h2 {
+  color: rgb(26, 46, 38);
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  margin-bottom: 20px;
+}
+
 .todo-list-items {
   list-style-type: none;
-  text-decoration: underline;
-  color: blue;
+  color: rgb(0, 68, 255);
   cursor: pointer;
+
+  &:hover {
+    color: rgb(67, 67, 173);
+  }
 }
 
 button {
