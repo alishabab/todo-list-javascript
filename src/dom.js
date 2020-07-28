@@ -10,7 +10,7 @@ const Display = (() => {
   const defaultProject = new Project('default', 'This is the default toDo list');
   let projectList = [defaultProject];
 
-  let firstRender = false;
+  let firstRender = true;
 
   const closeModal = () => document.querySelector('.modal__btn').click();
 
@@ -89,10 +89,9 @@ const Display = (() => {
   };
   const renderProjects = () => {
     cleanPage(projectDiv);
-
-    if (window.localStorage.getItem('projects') && firstRender === false) {
+    if (!store('projects') && firstRender) {
       projectList = store('projects');
-      firstRender = true;
+      firstRender = false;
     } else {
       store('projects', projectList);
     }
