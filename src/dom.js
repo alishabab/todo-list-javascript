@@ -48,12 +48,6 @@ const Display = (() => {
     closeModal();
   };
 
-  // const removeProject = (project) => {
-  //   if (project === defaultProject) { return; }
-  //   projectList = projectList.filter((value) => value !== project);
-  //   // eslint-disable-next-line no-use-before-define
-  //   renderProjects();
-  // };
   const renderTodo = (todo, project) => {
     cleanPage(modalContent);
     modalTitle.textContent = todo.title;
