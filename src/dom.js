@@ -56,14 +56,20 @@ const Display = (() => {
     editBtn.addEventListener('click', () => editTodo(project, todo));
   };
 
+  const toggleDone = (todo) => {
+    todo.complete = !todo.complete;
+    // eslint-disable-next-line no-use-before-define
+    renderProjects();
+  };
   const getTodoList = (project) => {
     const ul = document.createElement('ul');
     project.todoList.forEach(todo => {
       const li = document.createElement('li');
-      const completeBtn = document.createElement('button')
-      completeBtn.textContent = `${todo.complete ? 'Mark as Uncomplete' : 'Mark as Complete'}`
+      const completeBtn = document.createElement('button');
+      completeBtn.textContent = `${todo.complete ? 'Done' : 'Not Done'}`;
       li.textContent = `${todo.title} - Due: ${todo.dueDate}`;
-      li.appendChild(completeBtn)
+      ul.appendChild(completeBtn);
+      completeBtn.addEventListener('click', () => toggleDone(todo));
       li.classList.add('todo-list-items');
       li.addEventListener('click', () => renderTodo(todo, project));
       li.setAttribute('data-micromodal-trigger', 'modal-1');
@@ -111,10 +117,16 @@ const Display = (() => {
     const form = document.createElement('form');
     const inputs = ['title', 'description'];
     inputs.forEach(input => {
-      const element = document.createElement('input');
-      element.textContent = input;
-      element.classList.add(`project-${input}`);
-      form.appendChild(element);
+      const br = document.createElement('br');
+      const label = document.createElement('label');
+      label.textContent = input;
+      form.appendChild(label);
+      form.appendChild(br);
+      const inputArea = document.createElement('input');
+      inputArea.textContent = input;
+      inputArea.classList.add(`project-${input}`);
+      form.appendChild(inputArea);
+      form.appendChild(br);
     });
     const button = document.createElement('button');
     button.textContent = 'Create Project';
@@ -123,6 +135,18 @@ const Display = (() => {
     modalContent.appendChild(form);
   };
 
+  const checkInputs = (arr) => {
+    let inputsPass = true;
+    arr.forEach(input => {
+      if (input.length < 1) { inputsPass = false; }
+    });
+    if (inputsPass === false) {
+      const p = document.createElement('p');
+      p.textContent = 'Please input all data';
+      modalContent.appendChild(p);
+    }
+    return inputsPass;
+  };
   const createTodo = (event) => {
     event.preventDefault();
     const projectName = document.querySelector('.todo-project').value;
@@ -131,6 +155,7 @@ const Display = (() => {
     const description = document.querySelector('.todo-description').value;
     const dueDate = document.querySelector('.todo-dueDate').value;
     const priority = document.querySelector('.todo-priority').value;
+    if (!checkInputs([title, description, dueDate, priority])) { return; }
     const newTodo = new Todo(title, description, dueDate, priority);
     project[0].todoList.push(newTodo);
     renderProjects();
@@ -143,6 +168,12 @@ const Display = (() => {
     const select = document.createElement('select');
     select.classList.add('todo-project');
     inputs.forEach(input => {
+      const br = document.createElement('br');
+      const label = document.createElement('label');
+      // eslint-disable-next-line prefer-destructuring
+      label.textContent = input[0];
+      form.appendChild(label);
+      form.appendChild(br);
       const element = document.createElement('input');
       [element.textContent, element.type] = input;
       if (edited) {
@@ -150,6 +181,7 @@ const Display = (() => {
       }
       element.classList.add(`todo-${input[0]}`);
       form.appendChild(element);
+      form.appendChild(br);
     });
     projectList.forEach(project => {
       const option = document.createElement('option');
