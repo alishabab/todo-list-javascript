@@ -89,7 +89,7 @@ const Display = (() => {
   };
   const renderProjects = () => {
     cleanPage(projectDiv);
-    if (!store('projects') && firstRender) {
+    if (store('projects') && firstRender) {
       projectList = store('projects');
       firstRender = false;
     } else {
@@ -151,7 +151,7 @@ const Display = (() => {
     const title = document.querySelector('.todo-title').value;
     const description = document.querySelector('.todo-description').value;
     const dueDate = document.querySelector('.todo-dueDate').value;
-    const priority = document.querySelector('.todo-priority').value;
+    const priority = document.querySelector('input[name="priority"]:checked').textContent;
     if (!checkInputs([title, description, dueDate, priority])) { return; }
     const newTodo = new Todo(title, description, dueDate, priority);
     project[0].todoList.push(newTodo);
@@ -162,7 +162,7 @@ const Display = (() => {
     setNotice('');
     cleanPage(modalContent);
     const form = document.createElement('form');
-    const inputs = [['title', 'text'], ['description', 'text'], ['dueDate', 'date'], ['priority', 'number']];
+    const inputs = [['Title', 'text', 'title'], ['Description', 'text', 'description'], ['DueDate', 'date', 'dueDate'], ['Low', 'radio', 'priority'], ['Medium', 'radio', 'priority'], ['High', 'radio', 'priority']];
     const select = document.createElement('select');
     select.classList.add('todo-project');
     inputs.forEach(input => {
@@ -173,11 +173,11 @@ const Display = (() => {
       form.appendChild(label);
       form.appendChild(br);
       const element = document.createElement('input');
-      [element.textContent, element.type] = input;
+      [element.textContent, element.type, element.name] = input;
       if (edited) {
-        element.value = todo[input[0]];
+        element.value = todo[input[2]];
       }
-      element.classList.add(`todo-${input[0]}`);
+      element.classList.add(`todo-${input[2]}`);
       form.appendChild(element);
       form.appendChild(br);
     });
