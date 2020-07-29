@@ -36,13 +36,8 @@ const Display = (() => {
     return inputsPass;
   };
 
-  const editTodo = (project, todo) => {
-    // eslint-disable-next-line no-use-before-define
-    createTodoForm(true, todo, project);
-  };
-
   const removeTodo = (project, todo) => {
-    project.todoList = project.todoList.filter((value) => value !== todo);
+    Project.filterTodo(project, todo);
     // eslint-disable-next-line no-use-before-define
     renderProjects();
     closeModal();
@@ -63,7 +58,8 @@ const Display = (() => {
     delBtn.addEventListener('click', () => removeTodo(project, todo));
     editBtn.textContent = 'Edit Todo';
     modalContent.appendChild(editBtn);
-    editBtn.addEventListener('click', () => editTodo(project, todo));
+    // eslint-disable-next-line no-use-before-define
+    editBtn.addEventListener('click', () => createTodoForm(true, todo, project));
   };
 
   const toggleDone = (todo) => {
@@ -71,6 +67,7 @@ const Display = (() => {
     // eslint-disable-next-line no-use-before-define
     renderProjects();
   };
+
   const getTodoList = (project) => {
     const ul = document.createElement('ul');
     project.todoList.forEach(todo => {
@@ -87,14 +84,19 @@ const Display = (() => {
     });
     return ul;
   };
-  const renderProjects = () => {
-    cleanPage(projectDiv);
+
+  const localStorageController = () => {
     if (store('projects') && firstRender) {
       projectList = store('projects');
       firstRender = false;
     } else {
       store('projects', projectList);
     }
+  };
+
+  const renderProjects = () => {
+    cleanPage(projectDiv);
+    localStorageController();
 
     projectList.forEach(project => {
       const h2 = document.createElement('h2');
@@ -201,7 +203,9 @@ const Display = (() => {
     modalContent.appendChild(form);
   };
 
-  return { renderProjects, createProjectForm, createTodoForm };
+  return {
+    renderProjects, createProjectForm, createTodoForm,
+  };
 })();
 
 export default Display;

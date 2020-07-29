@@ -5,7 +5,6 @@ class Todo {
     this.dueDate = dueDate;
     this.priority = priority;
     this.complete = complete;
-    // Add notes and checklist later
   }
 }
 
